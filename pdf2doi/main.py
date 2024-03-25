@@ -164,6 +164,7 @@ def __find_doi(file: io.IOBase) -> dict:
         return result
 
     ### !!! I moved the third method to the end of the list, because it often leads to false positives. !!! ###
+    # See https://github.com/MicheleCotrufo/pdf2doi/issues/25
 
     # Fourth method: We look for possible titles of the paper, do a google search with them,
     # open the first results and look for identifiers in the plain text of the searcg results.

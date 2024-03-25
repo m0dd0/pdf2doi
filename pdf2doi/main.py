@@ -163,11 +163,7 @@ def __find_doi(file: io.IOBase) -> dict:
     if result['identifier']:
         return result
 
-    # Third method: We look in the plain text of the pdf and try to find something that matches a valid identifier.
-    # logger.info(f"Method #3: Looking for a valid identifier in the document text...")
-    # result = finders.find_identifier(file, method="document_text")
-    # if result['identifier']:
-    #     return result
+    ### !!! I moved the third method to the end of the list, because it often leads to false positives. !!! ###
 
     # Fourth method: We look for possible titles of the paper, do a google search with them,
     # open the first results and look for identifiers in the plain text of the searcg results.
@@ -181,6 +177,12 @@ def __find_doi(file: io.IOBase) -> dict:
     logger.info(
         f"Method #5: Trying to do a google search with the first {config.get('N_characters_in_pdf')} characters of this pdf file...")
     result = finders.find_identifier(file, method="first_N_characters_google")
+    if result['identifier']:
+        return result
+
+    # Third method: We look in the plain text of the pdf and try to find something that matches a valid identifier.
+    logger.info(f"Method #3: Looking for a valid identifier in the document text...")
+    result = finders.find_identifier(file, method="document_text")
     if result['identifier']:
         return result
 
